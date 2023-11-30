@@ -34,7 +34,10 @@ Example of `puzzleData.js`:
 
 ```js
 // puzzleData.js
-const exampleData = ``;
+const exampleData = `abc
+def
+ghi
+`;
 
 const puzzleData = `123
 456
@@ -76,11 +79,28 @@ export { session };
 
 ## Usage Instructions
 
-`main.js` takes two additional arguments to run:
+`main.js` takes up to 3 arguments to run:
 
-  1. `{year}`
-  2. `{day}`
+  1. `{year}` (required)
+  2. `{day}` (required)
+  3. `{codeIndex}` (optional)
 
-For example, in order to grab the data for `Day 1, Year 2022`, run the following:
+The `{year}` and `{day}` should be filled in according to the puzzle you wish to fetch.
+
+The script scrapes the question page in order to populate `question.md` and `exampleData`.
+
+`exampleData` is populated by searching for `<code>` blocks on each puzzle page. It pushes all the `<code>` blocks in an array and then picks one to use based on the first criteria which is met:
+
+  1. Using `{codeIndex}` given in the args when running the script.
+  2. The first `<code>` block with length > 20.
+  3. The `<code>` block with the greatest length.
+
+The script mostly picks the correct example code however there are some times you will need to manually pick a `codeIndex` in order to correctly populate `exampleData`.
+
+For example, in order to grab the data for [Year 2022, Day 1](https://adventofcode.com/2022/day/1), run the following:
 
 `node main.js 2022 1`
+
+[Year 2022, Day 20](https://adventofcode.com/2022/day/20) however, grabs the wrong `<code>` block by default. Therefore, you would need to run:
+
+`node main.js 2022 20 8`
