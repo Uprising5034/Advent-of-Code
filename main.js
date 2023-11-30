@@ -81,6 +81,7 @@ async function init() {
   const dir = writePuzzleData(year, day, puzzleData, exampleData);
 
   setTimeout(() => writeAnswerFile(dir), 10); // it's a bit of a bodge, but node can't find the directory without it...
+  setTimeout(() => writeQuestion(dir, articleMarkdown), 10)
 }
 
 async function fetchPage(year, day) {
@@ -114,6 +115,16 @@ async function fetchPage(year, day) {
     exampleData,
     articleMarkdown,
   };
+}
+
+function writeQuestion(dir, articleMarkdown) {
+  const filePath = dir + "/question.md";
+
+  fs.writeFile(filePath, articleMarkdown, (err) => {
+    if (err) {
+      console.error(err)
+    }
+  })
 }
 
 fetchPage(args[0], args[1]);
