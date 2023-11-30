@@ -112,7 +112,10 @@ async function fetchPage(year, day, codeIndex) {
   if (codeIndex) {
     exampleData = codeElements[codeIndex];
   } else {
-    exampleData = codeElements.reduce((a, b) => (a.length > b.length ? a : b));
+    exampleData = codeElements.find((element) => element.length > 20)
+    if (!exampleData) {
+      exampleData = codeElements.reduce((a, b) => (a.length > b.length ? a : b));
+    }
   }
 
   const articleMarkdown = turndownService.turndown(articleContent);
