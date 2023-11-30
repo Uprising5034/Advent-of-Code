@@ -1,4 +1,6 @@
 import fs from "node:fs";
+import * as cheerio from "cheerio";
+import TurndownService from "turndown";
 
 import { session } from "./sessionCookie/session.js";
 
@@ -70,6 +72,7 @@ async function init() {
   const year = args[0];
   const day = args[1];
 
+  const {exampleData, articleMarkdown} = fetchPage(year, day)
   const puzzleData = await fetchPuzzleData(year, day);
 
   // const dir = writePuzzleData(year, day, testData);
@@ -77,5 +80,40 @@ async function init() {
 
   setTimeout(() => writeAnswerFile(dir), 10); // it's a bit of a bodge, but node can't find the directory without it...
 }
+
+async function fetchPage(year, day) {
+  const turndownService = new TurndownService();
+  const url = `${BASE_URL}/${year}/day/${day}`;
+
+  const opts = {
+    headers: {
+      cookie: `session=${session}`,
+    },
+  };
+
+  const response = await fetch(url);
+  const page = await response.text();
+  const $ = cheerio.load(page);
+
+  const articleContent = $("article").html();
+
+  const codeElements = [];
+  $("code").each((index, element) => {
+    const codeContent = $(element).text();
+    codeElements.push(codeContent);
+  });
+  const exampleData = codeElements.reduce((a, b) =>
+    a.length > b.length ? a : b
+  );
+
+  const articleMarkdown = turndownService.turndown(articleContent);
+
+  return {
+    exampleData,
+    articleMarkdown,
+  };
+}
+
+fetchPage(args[0], args[1]);
 
 init();
