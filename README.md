@@ -76,7 +76,7 @@ export { session };
 
 ## Usage Instructions
 
-`questionGrabber.js` takes two additional arguments to run:
+`main.js` takes two additional arguments to run:
 
   1. `{year}`
   2. `{day}`
