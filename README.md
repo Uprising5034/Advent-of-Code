@@ -4,6 +4,8 @@ Quick and dirty script grab to puzzle data from Advent of Code using NodeJS.
 
 The script outputs files in the following structure:
 
+TODO: update tree
+
 ```zsh
 .
 ├── 2021
@@ -62,7 +64,11 @@ const inputData = useExampleData && exampleData ? exampleData : puzzleData;
 console.log(inputData);
 ```
 
+TODO: add `puzzle.md`
+
 ## Setup
+
+TODO: add npm setup
 
 The script requires your `session` cookie from the Advent of Code website. You will need to [be logged in](https://adventofcode.com/2023/auth/login) to obtain it.
 
