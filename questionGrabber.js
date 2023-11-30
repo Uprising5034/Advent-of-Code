@@ -31,7 +31,9 @@ function writePuzzleData(year, day, puzzleData) {
   const filePath = dir + "/puzzleData.js";
 
   const jsData =
-    "const puzzleData = ```" + puzzleData + "```;\nexport { puzzleData };\n";
+    "const testData = ``;\n\nconst puzzleData = `" +
+    puzzleData +
+    "`;\n\nexport { puzzleData, testData };\n";
 
   const handleError = (err) => {
     if (err) {
