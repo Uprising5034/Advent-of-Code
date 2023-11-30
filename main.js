@@ -28,12 +28,14 @@ async function fetchPuzzleData(year, day) {
   return puzzleData;
 }
 
-function writePuzzleData(year, day, puzzleData) {
+function writePuzzleData(year, day, puzzleData, exampleData) {
   const dir = `./${year}/${day}`;
   const filePath = dir + "/puzzleData.js";
 
   const jsData =
-    "const exampleData = ``;\n\nconst puzzleData = `" +
+    "const exampleData = `" +
+    exampleData +
+    "`;\n\nconst puzzleData = `" +
     puzzleData +
     "`;\n\nexport { puzzleData, exampleData };\n";
 
@@ -72,11 +74,11 @@ async function init() {
   const year = args[0];
   const day = args[1];
 
-  const {exampleData, articleMarkdown} = fetchPage(year, day)
+  const { exampleData, articleMarkdown } = await fetchPage(year, day);
   const puzzleData = await fetchPuzzleData(year, day);
 
   // const dir = writePuzzleData(year, day, testData);
-  const dir = writePuzzleData(year, day, puzzleData);
+  const dir = writePuzzleData(year, day, puzzleData, exampleData);
 
   setTimeout(() => writeAnswerFile(dir), 10); // it's a bit of a bodge, but node can't find the directory without it...
 }
