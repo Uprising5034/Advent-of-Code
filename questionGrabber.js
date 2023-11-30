@@ -51,6 +51,19 @@ function writePuzzleData(year, day, puzzleData) {
   };
 
   fs.writeFile(filePath, jsData, handleError);
+  return dir;
+}
+
+function writeAnswerFile(dir) {
+  const filePath = dir + "/answer.js";
+
+  const jsData = `import { testData } from "./puzzleData.js";\nimport { puzzleData } from "./puzzleData.js";\n\nlet useTestData\nuseTestData = true;\n\nconst inputData = useTestData && testData ? testData : puzzleData\n\nconsole.log(inputData);\n`;
+
+  fs.writeFile(filePath, jsData, (err) => {
+    if (err) {
+      console.error(err);
+    }
+  });
 }
 
 async function init() {
