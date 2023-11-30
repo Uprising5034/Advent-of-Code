@@ -12,7 +12,7 @@ if (args.length != 2) {
   throw console.error("script requires args:\n{year} {day} \neg. 2022 1");
 }
 
-async function fetchPuzzleInput(year, day) {
+async function fetchPuzzleData(year, day) {
   const opts = {
     headers: {
       cookie: `session=${session}`,
@@ -31,9 +31,9 @@ function writePuzzleData(year, day, puzzleData) {
   const filePath = dir + "/puzzleData.js";
 
   const jsData =
-    "const testData = ``;\n\nconst puzzleData = `" +
+    "const exampleData = ``;\n\nconst puzzleData = `" +
     puzzleData +
-    "`;\n\nexport { puzzleData, testData };\n";
+    "`;\n\nexport { puzzleData, exampleData };\n";
 
   const handleError = (err) => {
     if (err) {
@@ -57,7 +57,7 @@ function writePuzzleData(year, day, puzzleData) {
 function writeAnswerFile(dir) {
   const filePath = dir + "/answer.js";
 
-  const jsData = `import { testData } from "./puzzleData.js";\nimport { puzzleData } from "./puzzleData.js";\n\nlet useTestData;\nuseTestData = true;\n\nconst inputData = useTestData && testData ? testData : puzzleData;\n\nconsole.log(inputData);\n`;
+  const jsData = `import { exampleData } from "./puzzleData.js";\nimport { puzzleData } from "./puzzleData.js";\n\nlet useExampleData;\nuseExampleData = true;\n\nconst inputData = useExampleData && exampleData ? exampleData : puzzleData;\n\nconsole.log(inputData);\n`;
 
   fs.writeFile(filePath, jsData, (err) => {
     if (err) {
@@ -70,7 +70,7 @@ async function init() {
   const year = args[0];
   const day = args[1];
 
-  const puzzleData = await fetchPuzzleInput(year, day);
+  const puzzleData = await fetchPuzzleData(year, day);
 
   // const dir = writePuzzleData(year, day, testData);
   const dir = writePuzzleData(year, day, puzzleData);

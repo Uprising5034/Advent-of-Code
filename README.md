@@ -34,29 +34,29 @@ Example of `puzzleData.js`:
 
 ```js
 // puzzleData.js
-const testData = ``;
+const exampleData = ``;
 
 const puzzleData = `123
 456
 789
 `;
 
-export { puzzleData, testData };
+export { puzzleData, exampleData };
 ```
 
-Script currently doesn't fetch `testData` (for now).
+Script currently doesn't fetch `exampleData` (for now).
 
 Example of `answer.js`:
 
 ```js
 // answer.js
-import { testData } from "./puzzleData.js";
+import { exampleData } from "./puzzleData.js";
 import { puzzleData } from "./puzzleData.js";
 
-let useTestData
-useTestData = true;
+let useExampleData
+useExampleData = true;
 
-const inputData = useTestData && testData ? testData : puzzleData
+const inputData = useExampleData && exampleData ? exampleData : puzzleData
 
 console.log(inputData);
 ```
