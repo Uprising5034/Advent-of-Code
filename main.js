@@ -72,7 +72,7 @@ function writeAnswerFile(dir) {
 }
 
 async function init() {
-  const { exampleData, articleMarkdown } = await fetchPage(
+  const { exampleData, articleMarkdown } = await fetchPuzzlePage(
     year,
     day,
     codeIndex
@@ -83,10 +83,10 @@ async function init() {
   const dir = writePuzzleData(year, day, puzzleData, exampleData);
 
   setTimeout(() => writeAnswerFile(dir), 10); // it's a bit of a bodge, but node can't find the directory without it...
-  setTimeout(() => writeQuestion(dir, articleMarkdown), 10);
+  setTimeout(() => writePuzzleArticle(dir, articleMarkdown), 10);
 }
 
-async function fetchPage(year, day, codeIndex) {
+async function fetchPuzzlePage(year, day, codeIndex) {
   const turndownService = new TurndownService();
   const url = `${BASE_URL}/${year}/day/${day}`;
 
@@ -126,8 +126,8 @@ async function fetchPage(year, day, codeIndex) {
   };
 }
 
-function writeQuestion(dir, articleMarkdown) {
-  const filePath = dir + "/question.md";
+function writePuzzleArticle(dir, articleMarkdown) {
+  const filePath = dir + "/puzzle.md";
 
   fs.writeFile(filePath, articleMarkdown, (err) => {
     if (err) {
