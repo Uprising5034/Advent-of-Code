@@ -8,9 +8,10 @@ const BASE_URL = "https://www.adventofcode.com";
 
 const testData = "puzzleData\npuzzleData\npuzzleData";
 
-const args = process.argv.slice(2);
+let args;
+const [year, day, codeIndex] = (args = process.argv.slice(2));
 
-if (args.length != 2) {
+if (args.length < 2) {
   throw console.error("script requires args:\n{year} {day} \neg. 2022 1");
 }
 
@@ -71,20 +72,21 @@ function writeAnswerFile(dir) {
 }
 
 async function init() {
-  const year = args[0];
-  const day = args[1];
-
-  const { exampleData, articleMarkdown } = await fetchPage(year, day);
+  const { exampleData, articleMarkdown } = await fetchPage(
+    year,
+    day,
+    codeIndex
+  );
   const puzzleData = await fetchPuzzleData(year, day);
 
   // const dir = writePuzzleData(year, day, testData);
   const dir = writePuzzleData(year, day, puzzleData, exampleData);
 
   setTimeout(() => writeAnswerFile(dir), 10); // it's a bit of a bodge, but node can't find the directory without it...
-  setTimeout(() => writeQuestion(dir, articleMarkdown), 10)
+  setTimeout(() => writeQuestion(dir, articleMarkdown), 10);
 }
 
-async function fetchPage(year, day) {
+async function fetchPage(year, day, codeIndex) {
   const turndownService = new TurndownService();
   const url = `${BASE_URL}/${year}/day/${day}`;
 
@@ -105,9 +107,13 @@ async function fetchPage(year, day) {
     const codeContent = $(element).text();
     codeElements.push(codeContent);
   });
-  const exampleData = codeElements.reduce((a, b) =>
-    a.length > b.length ? a : b
-  );
+
+  let exampleData;
+  if (codeIndex) {
+    exampleData = codeElements[codeIndex];
+  } else {
+    exampleData = codeElements.reduce((a, b) => (a.length > b.length ? a : b));
+  }
 
   const articleMarkdown = turndownService.turndown(articleContent);
 
@@ -122,11 +128,9 @@ function writeQuestion(dir, articleMarkdown) {
 
   fs.writeFile(filePath, articleMarkdown, (err) => {
     if (err) {
-      console.error(err)
+      console.error(err);
     }
-  })
+  });
 }
-
-fetchPage(args[0], args[1]);
 
 init();
