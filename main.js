@@ -1,6 +1,6 @@
 import fs from "node:fs";
 
-import { session } from "./session.js";
+import { session } from "./sessionCookie/session.js";
 
 const BASE_URL = "https://www.adventofcode.com";
 
