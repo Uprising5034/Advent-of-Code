@@ -1,12 +1,29 @@
 {
-  "name": "advent-of-code",
+  "name": "advent-of-code-javascript",
   "version": "1.0.0",
-  "description": "",
+  "description": "Quick and dirty script grab to puzzle data from Advent of Code using NodeJS.",
   "main": "questionGrabber.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Eduard Bissell",
   "license": "ISC",
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
+    "turndown": "^7.1.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Uprising5034/Advent-of-Code-JavaScript.git"
+  },
+  "keywords": [
+    "advent",
+    "of",
+    "code"
+  ],
+  "bugs": {
+    "url": "https://github.com/Uprising5034/Advent-of-Code-JavaScript/issues"
+  },
+  "homepage": "https://github.com/Uprising5034/Advent-of-Code-JavaScript#readme"
 }
