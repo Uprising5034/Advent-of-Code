@@ -70,9 +70,12 @@ async function init() {
   const year = args[0];
   const day = args[1];
 
-  const puzzleData = await fetchPuzzleInput(year, day)
+  const puzzleData = await fetchPuzzleInput(year, day);
 
-  writePuzzleData(year, day, puzzleData);
+  // const dir = writePuzzleData(year, day, testData);
+  const dir = writePuzzleData(year, day, puzzleData);
+
+  setTimeout(() => writeAnswerFile(dir), 10); // it's a bit of a bodge, but node can't find the directory without it...
 }
 
 init();
