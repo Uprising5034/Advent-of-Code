@@ -47,8 +47,6 @@ const puzzleData = `123
 export { puzzleData, exampleData };
 ```
 
-Script currently doesn't fetch `exampleData` (for now).
-
 Example of `answer.js`:
 
 ```js
