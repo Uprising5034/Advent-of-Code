@@ -1,6 +1,6 @@
 # Advent of Code puzzleData grabber
 
-Quick and dirty script grab puzzle data from Advent of Code using NodeJS.
+Quick and dirty script grab to puzzle data from Advent of Code using NodeJS.
 
 The script outputs files in the following structure:
 
