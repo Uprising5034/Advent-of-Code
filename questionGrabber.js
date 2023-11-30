@@ -4,7 +4,7 @@ import { session } from "./session.js";
 
 const BASE_URL = "https://www.adventofcode.com";
 
-const testData = "123\n123\n123";
+const testData = "puzzleData\npuzzleData\npuzzleData";
 
 const args = process.argv.slice(2);
 
