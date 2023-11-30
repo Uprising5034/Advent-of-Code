@@ -48,7 +48,7 @@ function writePuzzleData(year, day, puzzleData) {
     }
   };
 
-  fs.writeFile(filePath, puzzleData, handleError);
+  fs.writeFile(filePath, jsData, handleError);
 }
 
 async function init() {
