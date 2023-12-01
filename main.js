@@ -100,7 +100,7 @@ async function fetchPuzzlePage(year, day, codeIndex) {
   const response = await fetch(url, opts);
   const page = await response.text();
   const $ = cheerio.load(page);
-  
+
   let articleStr = "";
   $("article").each((i, element) => {
     articleStr += $(element).html();
@@ -108,19 +108,15 @@ async function fetchPuzzlePage(year, day, codeIndex) {
 
   const articleMarkdown = turndownService.turndown(articleStr);
 
-  const codeElements = [];
-  $("code").each((index, element) => {
-    const codeContent = $(element).text();
-    codeElements.push(codeContent);
-  });
+  const firstCodeElements = selectCodeElements(1)
 
   let exampleData;
   if (codeIndex) {
-    exampleData = codeElements[codeIndex];
+    exampleData = firstCodeElements[codeIndex];
   } else {
-    exampleData = codeElements.find((element) => element.length > 20);
+    exampleData = firstCodeElements.find((element) => element.length > 20);
     if (!exampleData) {
-      exampleData = codeElements.reduce((a, b) =>
+      exampleData = firstCodeElements.reduce((a, b) =>
         a.length > b.length ? a : b
       );
     }
@@ -140,6 +136,15 @@ function writePuzzleArticle(dir, articleMarkdown) {
       console.error(err);
     }
   });
+}
+
+function selectCodeElements(articleIndex) {
+  const codeElements = [];
+  $(`article:nth-child(${articleIndex}) code`).each((index, element) => {
+    const codeContent = $(element).text();
+    codeElements.push(codeContent);
+  });
+  return codeElements
 }
 
 init();
