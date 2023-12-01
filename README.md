@@ -170,5 +170,5 @@ node main.js 2022 auto none
 [Year 2022, Day 9](https://adventofcode.com/2022/day/9) grabs the wrong `<code>` block by default because the first code block that is greater than 20 characters long isn't the one we're after! Part 2 also has example data after a very long `<code>` block. Therefore, you would need to run:
 
 ```zsh
-node main.js 2022 20 9 5 7
+node main.js 2022 9 5 7
 ```
