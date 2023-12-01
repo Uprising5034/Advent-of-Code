@@ -63,11 +63,14 @@ function writeAnswerFile(dir) {
   const filePath = dir + "/answer.js";
   const url = `${BASE_URL}/${year}/day/${day}`;
 
-  const jsData = `// ${url}\nimport { exampleData } from "./puzzleData.js";\nimport { puzzleData } from "./puzzleData.js";\n\nlet useExampleData;\nuseExampleData = true;\n\nconst inputData = useExampleData && exampleData ? exampleData : puzzleData;\n\nconsole.log(inputData);\n`;
-
-  fs.writeFile(filePath, jsData, (err) => {
+  fs.open(filePath, (err) => {
     if (err) {
-      console.error(err);
+      if (err.errno === -2) {
+        const jsData = `// ${url}\nimport { exampleData } from "./puzzleData.js";\nimport { puzzleData } from "./puzzleData.js";\n\nlet useExampleData;\nuseExampleData = true;\n\nconst inputData = useExampleData && exampleData ? exampleData : puzzleData;\n\nconsole.log(inputData);\n`;
+        fs.writeFile(filePath, jsData, (err) => {});
+      } else {
+        console.error(err);
+      }
     }
   });
 }
