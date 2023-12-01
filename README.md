@@ -80,6 +80,7 @@ Example of `answer.js`:
 
 ```js
 // answer.js
+// https://www.adventofcode.com/2021/day/3
 import { exampleData } from "./puzzleData.js";
 import { puzzleData } from "./puzzleData.js";
 

@@ -61,8 +61,9 @@ function writePuzzleData(year, day, puzzleData, exampleData) {
 
 function writeAnswerFile(dir) {
   const filePath = dir + "/answer.js";
+  const url = `${BASE_URL}/${year}/day/${day}`
 
-  const jsData = `import { exampleData } from "./puzzleData.js";\nimport { puzzleData } from "./puzzleData.js";\n\nlet useExampleData;\nuseExampleData = true;\n\nconst inputData = useExampleData && exampleData ? exampleData : puzzleData;\n\nconsole.log(inputData);\n`;
+  const jsData = `// ${url}\nimport { exampleData } from "./puzzleData.js";\nimport { puzzleData } from "./puzzleData.js";\n\nlet useExampleData;\nuseExampleData = true;\n\nconst inputData = useExampleData && exampleData ? exampleData : puzzleData;\n\nconsole.log(inputData);\n`;
 
   fs.writeFile(filePath, jsData, (err) => {
     if (err) {
