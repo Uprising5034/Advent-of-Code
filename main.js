@@ -100,8 +100,13 @@ async function fetchPuzzlePage(year, day, codeIndex) {
   const response = await fetch(url, opts);
   const page = await response.text();
   const $ = cheerio.load(page);
+  
+  let articleStr = ""
+  $("article").each((i,element) => {
+    articleStr += $(element).html()
+  })
 
-  const articleContent = $("article").html();
+  const articleMarkdown = turndownService.turndown(articleStr);
 
   const codeElements = [];
   $("code").each((index, element) => {
@@ -120,8 +125,6 @@ async function fetchPuzzlePage(year, day, codeIndex) {
       );
     }
   }
-
-  const articleMarkdown = turndownService.turndown(articleContent);
 
   return {
     exampleData,
