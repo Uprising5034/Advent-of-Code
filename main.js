@@ -113,7 +113,7 @@ async function fetchPuzzlePage(year, day, codeIndex) {
   const exampleData = filterCodeElements(firstCodeElements, codeIndex);
 
   return {
-    exampleData,
+    exampleData: exampleData.part1,
     articleMarkdown,
   };
 }
