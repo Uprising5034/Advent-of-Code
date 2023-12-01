@@ -61,7 +61,7 @@ function writePuzzleData(year, day, puzzleData, exampleData) {
 
 function writeAnswerFile(dir) {
   const filePath = dir + "/answer.js";
-  const url = `${BASE_URL}/${year}/day/${day}`
+  const url = `${BASE_URL}/${year}/day/${day}`;
 
   const jsData = `// ${url}\nimport { exampleData } from "./puzzleData.js";\nimport { puzzleData } from "./puzzleData.js";\n\nlet useExampleData;\nuseExampleData = true;\n\nconst inputData = useExampleData && exampleData ? exampleData : puzzleData;\n\nconsole.log(inputData);\n`;
 
@@ -97,7 +97,7 @@ async function fetchPuzzlePage(year, day, codeIndex) {
     },
   };
 
-  const response = await fetch(url);
+  const response = await fetch(url, opts);
   const page = await response.text();
   const $ = cheerio.load(page);
 
@@ -113,9 +113,11 @@ async function fetchPuzzlePage(year, day, codeIndex) {
   if (codeIndex) {
     exampleData = codeElements[codeIndex];
   } else {
-    exampleData = codeElements.find((element) => element.length > 20)
+    exampleData = codeElements.find((element) => element.length > 20);
     if (!exampleData) {
-      exampleData = codeElements.reduce((a, b) => (a.length > b.length ? a : b));
+      exampleData = codeElements.reduce((a, b) =>
+        a.length > b.length ? a : b
+      );
     }
   }
 
