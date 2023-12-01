@@ -101,7 +101,9 @@ Example of `puzzle.md`
 
 ## Setup
 
-TODO: add npm setup
+Grab Node packages using your CLI:
+
+`npm ci`
 
 The script requires your `session` cookie from the Advent of Code website. You will need to [be logged in](https://adventofcode.com/2023/auth/login) to obtain it.
 
