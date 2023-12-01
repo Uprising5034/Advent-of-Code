@@ -94,7 +94,7 @@ console.log(inputData);
 Example of `puzzle.md`
 
 ```md
-\--- Day 1: Calorie Counting ---
+\--- Day 1: Elves Elfin' Everything  ---
 --------------------------------
 ...
 ```
