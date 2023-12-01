@@ -7,7 +7,8 @@ import { session } from "./sessionCookie/session.js";
 const BASE_URL = "https://www.adventofcode.com";
 
 let args;
-const [year, day, codeIndex] = (args = process.argv.slice(2));
+const [year, day, codeIndexArg1, codeIndexArg2] = (args =
+  process.argv.slice(2));
 
 if (args.length < 2) {
   throw console.error("script requires args:\n{year} {day} \neg. 2022 1");
@@ -77,7 +78,7 @@ async function init() {
   const { exampleData, articleMarkdown } = await fetchPuzzlePage(
     year,
     day,
-    codeIndex
+    codeIndexArg1
   );
   const puzzleData = await fetchPuzzleData(year, day);
 
@@ -87,7 +88,7 @@ async function init() {
   setTimeout(() => writePuzzleArticle(dir, articleMarkdown), 10);
 }
 
-async function fetchPuzzlePage(year, day, codeIndex) {
+async function fetchPuzzlePage(year, day, codeIndexArg1, codeIndexArg2) {
   const turndownService = new TurndownService();
   const url = `${BASE_URL}/${year}/day/${day}`;
 
@@ -101,16 +102,27 @@ async function fetchPuzzlePage(year, day, codeIndex) {
   const page = await response.text();
   const $ = cheerio.load(page);
 
-  let articleStr = "";
+  const articles = [];
   $("article").each((i, element) => {
-    articleStr += $(element).html();
+    articles.push($(element).html());
+  });
+
+  let articleStr = "";
+  articles.forEach((article) => {
+    articleStr += article;
   });
 
   const articleMarkdown = turndownService.turndown(articleStr);
 
-  const firstCodeElements = selectCodeElements($, 1);
+  const firstCodeElements = selectCodeElements(articles[0]);
+  const secondCodeElements = selectCodeElements(articles[1]);
 
-  const exampleData = filterCodeElements(firstCodeElements, codeIndex);
+  const exampleData = {
+    part1: filterCodeElements(firstCodeElements, codeIndexArg1),
+    part2: filterCodeElements(secondCodeElements, codeIndexArg2),
+  };
+
+  console.log("exampleData", exampleData);
 
   return {
     exampleData: exampleData.part1,
@@ -128,24 +140,27 @@ function writePuzzleArticle(dir, articleMarkdown) {
   });
 }
 
-function selectCodeElements($, articleIndex) {
+function selectCodeElements(article) {
+  const $article = cheerio.load(article);
+
   const codeElements = [];
-  $(`article:nth-child(${articleIndex}) code`).each((index, element) => {
-    const codeContent = $(element).text();
+  $article("code").each((index, element) => {
+    const codeContent = $article(element).text();
     codeElements.push(codeContent);
   });
   return codeElements;
 }
 
 function filterCodeElements(codeArray, codeIndexArg) {
-  if (codeIndexArg) {
+  const bigCodeLength = 20
+
+  if (codeIndexArg && codeIndexArg !== "auto") {
     return codeArray[codeIndexArg];
   } else {
-    try {
-      return codeArray.find((element) => element.length > 20);
-    } catch {
-      return codeArray.reduce((a, b) => (a.length > b.length ? a : b));
-    }
+    const firstBigCode = codeArray.find((element) => element.length > bigCodeLength);
+    return (
+      firstBigCode || codeArray.reduce((a, b) => (a.length > b.length ? a : b))
+    );
   }
 }
 
