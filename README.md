@@ -60,17 +60,19 @@ Example of `puzzleData.js`:
 
 ```js
 // puzzleData.js
-const exampleData = `abc
-def
-ghi
-`;
-
-const puzzleData = `123
+const exampleDataPart1 = `123
 456
-789
-`;
+789`;
 
-export { puzzleData, exampleData };
+const exampleDataPart2 = `abc
+def
+ghi`;
+
+const puzzleData = `foo
+bar
+daz`;
+
+export { puzzleData, exampleDataPart1, exampleDataPart2 };
 ```
 
 Example of `answer.js`:
