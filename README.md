@@ -24,7 +24,6 @@ The script outputs files in the following structure:
 │   │   ├── answer.js
 │   │   ├── puzzle.md
 │   │   └── puzzleData.js
-│   ├── 3
 │   └── etc
 │       ├── answer.js
 │       ├── puzzle.md
