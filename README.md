@@ -149,18 +149,26 @@ The script mostly picks the correct example code however there are some times yo
 
 For [Year 2022, Day 1](https://adventofcode.com/2022/day/1), run the following:
 
-`node main.js 2022 1`
+```zsh
+node main.js 2022 1
+```
 
 When we successfully answer part 1, we can then run the command again to repopulate `puzzle.md` and `puzzleData.js`:
 
-`node main.js 2022 1`
+```zsh
+node main.js 2022 1
+```
 
 Then reading through the question, we find we don't actually have any additional test data for part 2, we could instead request `auto` for part 1 and `none` for part 2 and get the same results:
 
-`node main.js 2022 auto none`
+```zsh
+node main.js 2022 auto none
+```
 
 ### Example 2
 
 [Year 2022, Day 9](https://adventofcode.com/2022/day/9) grabs the wrong `<code>` block by default because the first code block that is greater than 20 characters long isn't the one we're after! Part 2 also has example data after a very long `<code>` block. Therefore, you would need to run:
 
-`node main.js 2022 20 9 5 7`
+```zsh
+node main.js 2022 20 9 5 7
+```
