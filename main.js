@@ -112,7 +112,7 @@ async function fetchPuzzlePage(year, day, codeIndexArg1, codeIndexArg2) {
   const articleMarkdown = turndownService.turndown(articleStr);
 
   return {
-    exampleData: exampleData.part1,
+    exampleData,
     articleMarkdown,
   };
 }
@@ -141,6 +141,8 @@ function selectCodeElements(article) {
 function filterCodeElements(codeArray, codeIndexArg) {
   const bigCodeLength = 20
 
+  if (codeIndexArg === null) return null
+
   if (codeIndexArg && codeIndexArg !== "auto") {
     return codeArray[codeIndexArg];
   } else {
@@ -155,7 +157,8 @@ async function init() {
   const { exampleData, articleMarkdown } = await fetchPuzzlePage(
     year,
     day,
-    codeIndexArg1
+    codeIndexArg1,
+    codeIndexArg2,
   );
   const puzzleData = await fetchPuzzleData(year, day);
 
