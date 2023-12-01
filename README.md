@@ -2,6 +2,14 @@
 
 Quick and dirty script grab to puzzle data from Advent of Code using NodeJS.
 
+## Table of Contents
+
+1. [Output](#output)
+2. [Setup](#setup)
+3. [Usage](#usage)
+
+## Output
+
 The script outputs files in the following structure:
 
 ```zsh
