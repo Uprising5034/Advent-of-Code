@@ -6,10 +6,9 @@ import { session } from "./sessionCookie/session.js";
 
 const BASE_URL = "https://www.adventofcode.com";
 
-const testData = "puzzleData\npuzzleData\npuzzleData";
-
 let args;
-const [year, day, codeIndex] = (args = process.argv.slice(2));
+const [year, day, codeIndexArg1, codeIndexArg2] = (args =
+  process.argv.slice(2));
 
 if (args.length < 2) {
   throw console.error("script requires args:\n{year} {day} \neg. 2022 1");
@@ -33,12 +32,18 @@ function writePuzzleData(year, day, puzzleData, exampleData) {
   const dir = `./${year}/${day}`;
   const filePath = dir + "/puzzleData.js";
 
+  if (!exampleData.part2) {
+    exampleData.part2 = ""
+  }
+
   const jsData =
-    "const exampleData = `" +
-    exampleData +
+    "const exampleDataPart1 = `" +
+    exampleData.part1 +
+    "`;\n\nconst exampleDataPart2 = `" +
+    exampleData.part2 +
     "`;\n\nconst puzzleData = `" +
     puzzleData +
-    "`;\n\nexport { puzzleData, exampleData };\n";
+    "`;\n\nexport { puzzleData, exampleDataPart1, exampleDataPart2 };\n";
 
   const handleError = (err) => {
     if (err) {
@@ -61,33 +66,21 @@ function writePuzzleData(year, day, puzzleData, exampleData) {
 
 function writeAnswerFile(dir) {
   const filePath = dir + "/answer.js";
-  const url = `${BASE_URL}/${year}/day/${day}`
+  const url = `${BASE_URL}/${year}/day/${day}`;
 
-  const jsData = `// ${url}\nimport { exampleData } from "./puzzleData.js";\nimport { puzzleData } from "./puzzleData.js";\n\nlet useExampleData;\nuseExampleData = true;\n\nconst inputData = useExampleData && exampleData ? exampleData : puzzleData;\n\nconsole.log(inputData);\n`;
-
-  fs.writeFile(filePath, jsData, (err) => {
+  fs.open(filePath, (err) => {
     if (err) {
-      console.error(err);
+      if (err.errno === -2) {
+        const jsData = `// ${url}\nimport { puzzleData } from "./puzzleData.js";\nimport { exampleDataPart1, exampleDataPart2 } from "./puzzleData.js";\n\nconst allData = [puzzleData, exampleDataPart1, exampleDataPart2];\n\nconst inputData = allData[0];\n\nconsole.log(inputData);\n`;
+        fs.writeFile(filePath, jsData, (err) => {});
+      } else {
+        console.error(err);
+      }
     }
   });
 }
 
-async function init() {
-  const { exampleData, articleMarkdown } = await fetchPuzzlePage(
-    year,
-    day,
-    codeIndex
-  );
-  const puzzleData = await fetchPuzzleData(year, day);
-
-  // const dir = writePuzzleData(year, day, testData);
-  const dir = writePuzzleData(year, day, puzzleData, exampleData);
-
-  setTimeout(() => writeAnswerFile(dir), 10); // it's a bit of a bodge, but node can't find the directory without it...
-  setTimeout(() => writePuzzleArticle(dir, articleMarkdown), 10);
-}
-
-async function fetchPuzzlePage(year, day, codeIndex) {
+async function fetchPuzzlePage(year, day, codeIndexArg1, codeIndexArg2) {
   const turndownService = new TurndownService();
   const url = `${BASE_URL}/${year}/day/${day}`;
 
@@ -97,29 +90,26 @@ async function fetchPuzzlePage(year, day, codeIndex) {
     },
   };
 
-  const response = await fetch(url);
+  const response = await fetch(url, opts);
   const page = await response.text();
   const $ = cheerio.load(page);
 
-  const articleContent = $("article").html();
-
-  const codeElements = [];
-  $("code").each((index, element) => {
-    const codeContent = $(element).text();
-    codeElements.push(codeContent);
+  const articles = [];
+  $("article").each((i, element) => {
+    articles.push($(element).html());
   });
 
-  let exampleData;
-  if (codeIndex) {
-    exampleData = codeElements[codeIndex];
-  } else {
-    exampleData = codeElements.find((element) => element.length > 20)
-    if (!exampleData) {
-      exampleData = codeElements.reduce((a, b) => (a.length > b.length ? a : b));
-    }
-  }
+  const codeIndexArgs = [codeIndexArg1, codeIndexArg2]
+  let articleStr = "";
+  const exampleData = {}
+  articles.forEach((article, index) => {
+    const codeElements = selectCodeElements(article)
+    exampleData[`part${index + 1}`] = filterCodeElements(codeElements, codeIndexArgs[index])
 
-  const articleMarkdown = turndownService.turndown(articleContent);
+    articleStr += article;
+  });
+
+  const articleMarkdown = turndownService.turndown(articleStr);
 
   return {
     exampleData,
@@ -135,6 +125,47 @@ function writePuzzleArticle(dir, articleMarkdown) {
       console.error(err);
     }
   });
+}
+
+function selectCodeElements(article) {
+  const $article = cheerio.load(article);
+
+  const codeElements = [];
+  $article("code").each((index, element) => {
+    const codeContent = $article(element).text();
+    codeElements.push(codeContent);
+  });
+  return codeElements;
+}
+
+function filterCodeElements(codeArray, codeIndexArg) {
+  const bigCodeLength = 20
+
+  if (codeIndexArg === "none") return null
+
+  if (codeIndexArg && codeIndexArg !== "auto") {
+    return codeArray[codeIndexArg];
+  } else {
+    const firstBigCode = codeArray.find((element) => element.length > bigCodeLength);
+    return (
+      firstBigCode || codeArray.reduce((a, b) => (a.length > b.length ? a : b))
+    );
+  }
+}
+
+async function init() {
+  const { exampleData, articleMarkdown } = await fetchPuzzlePage(
+    year,
+    day,
+    codeIndexArg1,
+    codeIndexArg2,
+  );
+  const puzzleData = await fetchPuzzleData(year, day);
+
+  const dir = writePuzzleData(year, day, puzzleData, exampleData);
+
+  setTimeout(() => writeAnswerFile(dir), 10); // it's a bit of a bodge, but node can't find the directory without it...
+  setTimeout(() => writePuzzleArticle(dir, articleMarkdown), 10);
 }
 
 init();
