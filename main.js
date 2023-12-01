@@ -110,17 +110,7 @@ async function fetchPuzzlePage(year, day, codeIndex) {
 
   const firstCodeElements = selectCodeElements($, 1);
 
-  let exampleData;
-  if (codeIndex) {
-    exampleData = firstCodeElements[codeIndex];
-  } else {
-    exampleData = firstCodeElements.find((element) => element.length > 20);
-    if (!exampleData) {
-      exampleData = firstCodeElements.reduce((a, b) =>
-        a.length > b.length ? a : b
-      );
-    }
-  }
+  const exampleData = filterCodeElements(firstCodeElements, codeIndex);
 
   return {
     exampleData,
@@ -145,6 +135,18 @@ function selectCodeElements($, articleIndex) {
     codeElements.push(codeContent);
   });
   return codeElements;
+}
+
+function filterCodeElements(codeArray, codeIndexArg) {
+  if (codeIndexArg) {
+    return codeArray[codeIndexArg];
+  } else {
+    try {
+      return codeArray.find((element) => element.length > 20);
+    } catch {
+      return codeArray.reduce((a, b) => (a.length > b.length ? a : b));
+    }
+  }
 }
 
 init();
