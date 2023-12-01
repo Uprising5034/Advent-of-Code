@@ -13,11 +13,11 @@ zoneight234
 let useExampleData;
 // useExampleData = true;
 
-// const inputData = useExampleData && exampleData ? exampleData : puzzleData;
-const inputData = exampleData2;
+const inputData = useExampleData && exampleData ? exampleData : puzzleData;
+// const inputData = exampleData2;
 
 const inputArray = inputData.split("\n");
-// const inputArray = [inputData.split("\n")[2]];
+// const inputArray = [inputData.split("\n")[20]];
 
 const spelledToNum = {
   one: "1",
@@ -31,67 +31,97 @@ const spelledToNum = {
   nine: "9",
 };
 
+function checkFullMatch(key, testSlice) {
+  console.log("key", key, "testSlice", testSlice);
+
+  for (let i = 0; i < testSlice.length; i++) {
+    if (testSlice[i] !== key[i]) {
+      return false;
+    }
+  }
+  return true;
+}
+
 function makeNumArray(inputArray) {
   const fullArray = inputArray.map((string, strIdx) => {
-    let stringMut = false;
-    while (!stringMut) {
-      for (let index = 0; index < string.length; index++) {
-        const char = string[index];
-        for (const key in spelledToNum) {
-          if (key[0] === char) {
-            const num = spelledToNum[key];
-            string = string.replace(key, num);
-            stringMut = true;
-            // break;
-          }
-        }
-      }
-    }
+    let strFirst = string;
+    let changedFirstString;
+    for (let index = 0; index < strFirst.length; index++) {
+      const char = strFirst[index];
 
-    stringMut = false;
-    while (!stringMut) {
-      for (let index = string.length - 1; index > -1; index--) {
-        const char = string[index];
-        for (const key in spelledToNum) {
-          if (key[key.length - 1] === char) {
-            console.log('key, char', key, char)
+      if (!isNaN(Number(char))) {
+        break;
+      }
+
+      for (const key in spelledToNum) {
+        if (key[0] === char) {
+          const testSlice = strFirst.slice(index, index + key.length);
+
+          if (checkFullMatch(key, testSlice)) {
             const num = spelledToNum[key];
-            const newString = string.replace(key, num);
-            console.log('string, newString', string, newString)
-            string = newString
-            stringMut = true;
+
+            const stringArr = strFirst.split("");
+            stringArr.splice(index, key.length, num);
+
+            strFirst = stringArr.join("");
+
+            changedFirstString = true;
             break;
           }
         }
       }
-      stringMut = true
+      if (changedFirstString) {
+        break;
+      }
     }
 
-    // if (zeroString) {
-    //   for (const key in spelledToNum) {
-    //     if (key[0] === string[0]) {
-    //       const num = spelledToNum[key];
-    //       string = string.replace(key, num);
-    //     }
-    //   }
-    // }
+    console.log('string', string)
 
-    // if (lastString) {
-    //   for (const key in spelledToNum) {
-    //     if (key[key.length - 1] === string[string.length - 1]) {
-    //       const num = spelledToNum[key];
-    //       string = string.replace(key, num);
-    //     }
-    //   }
-    // }
+    let strLast = string;
+    let changedLastString;
+    console.log("strLast", strLast);
+    for (let index = strLast.length - 1; index > -1; index--) {
+      const char = strLast[index];
+      console.log("char, index", char, index);
 
-    console.log(' string',  string)
+      if (!isNaN(Number(char))) {
+        break;
+      }
 
-    const strArray = string.split("");
+      for (const key in spelledToNum) {
+        if (key[key.length - 1] === char) {
+          const startIndexValid = (index - key.length + 1) > -1
+
+          const testSlice = strLast.slice(index - key.length + 1, index + 1);
+
+          if (checkFullMatch(key, testSlice) && startIndexValid) {
+            const num = spelledToNum[key];
+
+            const stringArr = strLast.split("");
+            stringArr.splice(index - key.length + 1, key.length, num);
+
+            strLast = stringArr.join("");
+            changedLastString = true;
+            break;
+          }
+        }
+      }
+      if (changedLastString) {
+        break;
+      }
+    }
+
+    const bothStr = strFirst + strLast;
+
+    const strArray = bothStr.split("");
     const numArray = strArray.filter((char) => !isNaN(Number(char)));
 
     const num1 = numArray[0];
     const num2 = numArray[numArray.length - 1];
+
+    if (changedLastString) {
+      // console.log(strIdx, string, num1, num2, `\n`)
+    }
 
     return Number(num1 + num2);
   });
