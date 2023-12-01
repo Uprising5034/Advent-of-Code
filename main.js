@@ -101,10 +101,10 @@ async function fetchPuzzlePage(year, day, codeIndex) {
   const page = await response.text();
   const $ = cheerio.load(page);
   
-  let articleStr = ""
-  $("article").each((i,element) => {
-    articleStr += $(element).html()
-  })
+  let articleStr = "";
+  $("article").each((i, element) => {
+    articleStr += $(element).html();
+  });
 
   const articleMarkdown = turndownService.turndown(articleStr);
 
