@@ -6,8 +6,6 @@ import { session } from "./sessionCookie/session.js";
 
 const BASE_URL = "https://www.adventofcode.com";
 
-const testData = "puzzleData\npuzzleData\npuzzleData";
-
 let args;
 const [year, day, codeIndex] = (args = process.argv.slice(2));
 
@@ -83,7 +81,6 @@ async function init() {
   );
   const puzzleData = await fetchPuzzleData(year, day);
 
-  // const dir = writePuzzleData(year, day, testData);
   const dir = writePuzzleData(year, day, puzzleData, exampleData);
 
   setTimeout(() => writeAnswerFile(dir), 10); // it's a bit of a bodge, but node can't find the directory without it...
