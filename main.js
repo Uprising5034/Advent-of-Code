@@ -108,7 +108,7 @@ async function fetchPuzzlePage(year, day, codeIndex) {
 
   const articleMarkdown = turndownService.turndown(articleStr);
 
-  const firstCodeElements = selectCodeElements(1)
+  const firstCodeElements = selectCodeElements($, 1);
 
   let exampleData;
   if (codeIndex) {
@@ -138,13 +138,13 @@ function writePuzzleArticle(dir, articleMarkdown) {
   });
 }
 
-function selectCodeElements(articleIndex) {
+function selectCodeElements($, articleIndex) {
   const codeElements = [];
   $(`article:nth-child(${articleIndex}) code`).each((index, element) => {
     const codeContent = $(element).text();
     codeElements.push(codeContent);
   });
-  return codeElements
+  return codeElements;
 }
 
 init();
