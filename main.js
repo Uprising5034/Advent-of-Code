@@ -107,22 +107,17 @@ async function fetchPuzzlePage(year, day, codeIndexArg1, codeIndexArg2) {
     articles.push($(element).html());
   });
 
+  const codeIndexArgs = [codeIndexArg1, codeIndexArg2]
   let articleStr = "";
-  articles.forEach((article) => {
+  const exampleData = {}
+  articles.forEach((article, index) => {
+    const codeElements = selectCodeElements(article)
+    exampleData[`part${index + 1}`] = filterCodeElements(codeElements, codeIndexArgs[index])
+
     articleStr += article;
   });
 
   const articleMarkdown = turndownService.turndown(articleStr);
-
-  const firstCodeElements = selectCodeElements(articles[0]);
-  const secondCodeElements = selectCodeElements(articles[1]);
-
-  const exampleData = {
-    part1: filterCodeElements(firstCodeElements, codeIndexArg1),
-    part2: filterCodeElements(secondCodeElements, codeIndexArg2),
-  };
-
-  console.log("exampleData", exampleData);
 
   return {
     exampleData: exampleData.part1,
