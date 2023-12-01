@@ -24,9 +24,6 @@ The script outputs files in the following structure:
 │   │   ├── puzzle.md
 │   │   └── puzzleData.js
 │   ├── 3
-│   │   ├── answer.js
-│   │   ├── puzzle.md
-│   │   └── puzzleData.js
 │   └── etc
 │       ├── answer.js
 │       ├── puzzle.md
@@ -40,10 +37,6 @@ The script outputs files in the following structure:
 │   │   ├── answer.js
 │   │   ├── puzzle.md
 │   │   └── puzzleData.js
-│   ├── 3
-│   │   ├── answer.js
-│   │   ├── puzzle.md
-│   │   └── puzzleData.js
 │   └── etc
 │       ├── answer.js
 │       ├── puzzle.md
@@ -54,10 +47,6 @@ The script outputs files in the following structure:
     │   ├── puzzle.md
     │   └── puzzleData.js
     ├── 2
-    │   ├── answer.js
-    │   ├── puzzle.md
-    │   └── puzzleData.js
-    ├── 3
     │   ├── answer.js
     │   ├── puzzle.md
     │   └── puzzleData.js
