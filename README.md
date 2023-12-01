@@ -91,7 +91,13 @@ const inputData = useExampleData && exampleData ? exampleData : puzzleData;
 console.log(inputData);
 ```
 
-TODO: add `puzzle.md`
+Example of `puzzle.md`
+
+```md
+\--- Day 1: Calorie Counting ---
+--------------------------------
+...
+```
 
 ## Setup
 
