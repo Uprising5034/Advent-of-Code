@@ -74,20 +74,6 @@ function writeAnswerFile(dir) {
   });
 }
 
-async function init() {
-  const { exampleData, articleMarkdown } = await fetchPuzzlePage(
-    year,
-    day,
-    codeIndexArg1
-  );
-  const puzzleData = await fetchPuzzleData(year, day);
-
-  const dir = writePuzzleData(year, day, puzzleData, exampleData);
-
-  setTimeout(() => writeAnswerFile(dir), 10); // it's a bit of a bodge, but node can't find the directory without it...
-  setTimeout(() => writePuzzleArticle(dir, articleMarkdown), 10);
-}
-
 async function fetchPuzzlePage(year, day, codeIndexArg1, codeIndexArg2) {
   const turndownService = new TurndownService();
   const url = `${BASE_URL}/${year}/day/${day}`;
@@ -157,6 +143,20 @@ function filterCodeElements(codeArray, codeIndexArg) {
       firstBigCode || codeArray.reduce((a, b) => (a.length > b.length ? a : b))
     );
   }
+}
+
+async function init() {
+  const { exampleData, articleMarkdown } = await fetchPuzzlePage(
+    year,
+    day,
+    codeIndexArg1
+  );
+  const puzzleData = await fetchPuzzleData(year, day);
+
+  const dir = writePuzzleData(year, day, puzzleData, exampleData);
+
+  setTimeout(() => writeAnswerFile(dir), 10); // it's a bit of a bodge, but node can't find the directory without it...
+  setTimeout(() => writePuzzleArticle(dir, articleMarkdown), 10);
 }
 
 init();
