@@ -4,32 +4,59 @@ Quick and dirty script grab to puzzle data from Advent of Code using NodeJS.
 
 The script outputs files in the following structure:
 
-TODO: update tree
-
 ```zsh
 .
 ├── 2021
 │   ├── 1
 │   │   ├── answer.js
+│   │   ├── puzzle.md
 │   │   └── puzzleData.js
 │   ├── 2
 │   │   ├── answer.js
+│   │   ├── puzzle.md
 │   │   └── puzzleData.js
 │   ├── 3
 │   │   ├── answer.js
+│   │   ├── puzzle.md
 │   │   └── puzzleData.js
 │   └── etc
-└── 2022
+│       ├── answer.js
+│       ├── puzzle.md
+│       └── puzzleData.js
+├── 2022
+│   ├── 1
+│   │   ├── answer.js
+│   │   ├── puzzle.md
+│   │   └── puzzleData.js
+│   ├── 2
+│   │   ├── answer.js
+│   │   ├── puzzle.md
+│   │   └── puzzleData.js
+│   ├── 3
+│   │   ├── answer.js
+│   │   ├── puzzle.md
+│   │   └── puzzleData.js
+│   └── etc
+│       ├── answer.js
+│       ├── puzzle.md
+│       └── puzzleData.js
+└── etc
     ├── 1
     │   ├── answer.js
+    │   ├── puzzle.md
     │   └── puzzleData.js
     ├── 2
     │   ├── answer.js
+    │   ├── puzzle.md
     │   └── puzzleData.js
     ├── 3
     │   ├── answer.js
+    │   ├── puzzle.md
     │   └── puzzleData.js
     └── etc
+        ├── answer.js
+        ├── puzzle.md
+        └── puzzleData.js
 ```
 
 Example of `puzzleData.js`:
