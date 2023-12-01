@@ -7,6 +7,7 @@ Quick and dirty script grab to puzzle data from Advent of Code using NodeJS.
 1. [Output](#output)
 2. [Setup](#setup)
 3. [Usage](#usage)
+4. [Examples](#examples)
 
 ## Output
 
@@ -143,7 +144,11 @@ Each `exampleData` is populated with `<code>` blocks on each part of the puzzle 
 
 The script mostly picks the correct example code however there are some times you will need to manually pick a `codeIndex` in order to correctly populate each `exampleData`.
 
-For example, for [Year 2022, Day 1](https://adventofcode.com/2022/day/1), run the following:
+## Examples
+
+### Example 1
+
+For [Year 2022, Day 1](https://adventofcode.com/2022/day/1), run the following:
 
 `node main.js 2022 1`
 
@@ -155,6 +160,8 @@ Then reading through the question, we find we don't actually have any additional
 
 `node main.js 2022 auto none`
 
-[Year 2022, Day 9](https://adventofcode.com/2022/day/9) however, grabs the wrong `<code>` block by default because the first code block that is greater than 20 characters long isn't the one we're after! Part 2 also has example data after a very long `<code>` block. Therefore, you would need to run:
+### Example 2
+
+[Year 2022, Day 9](https://adventofcode.com/2022/day/9) grabs the wrong `<code>` block by default because the first code block that is greater than 20 characters long isn't the one we're after! Part 2 also has example data after a very long `<code>` block. Therefore, you would need to run:
 
 `node main.js 2022 20 9 5 7`
