@@ -32,12 +32,18 @@ function writePuzzleData(year, day, puzzleData, exampleData) {
   const dir = `./${year}/${day}`;
   const filePath = dir + "/puzzleData.js";
 
+  if (!exampleData.part2) {
+    exampleData.part2 = ""
+  }
+
   const jsData =
-    "const exampleData = `" +
-    exampleData +
+    "const exampleDataPart1 = `" +
+    exampleData.part1 +
+    "`;\n\nconst exampleDataPart2 = `" +
+    exampleData.part2 +
     "`;\n\nconst puzzleData = `" +
     puzzleData +
-    "`;\n\nexport { puzzleData, exampleData };\n";
+    "`;\n\nexport { puzzleData, exampleDataPart1, exampleDataPart2 };\n";
 
   const handleError = (err) => {
     if (err) {
@@ -65,7 +71,7 @@ function writeAnswerFile(dir) {
   fs.open(filePath, (err) => {
     if (err) {
       if (err.errno === -2) {
-        const jsData = `// ${url}\nimport { exampleData } from "./puzzleData.js";\nimport { puzzleData } from "./puzzleData.js";\n\nlet useExampleData;\nuseExampleData = true;\n\nconst inputData = useExampleData && exampleData ? exampleData : puzzleData;\n\nconsole.log(inputData);\n`;
+        const jsData = `// ${url}\nimport { puzzleData } from "./puzzleData.js";\nimport { exampleDataPart1, exampleDataPart2 } from "./puzzleData.js";\n\nconst allData = [puzzleData, exampleDataPart1, exampleDataPart2];\n\nconst inputData = allData[0];\n\nconsole.log(inputData);\n`;
         fs.writeFile(filePath, jsData, (err) => {});
       } else {
         console.error(err);
