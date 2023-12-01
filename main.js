@@ -141,7 +141,7 @@ function selectCodeElements(article) {
 function filterCodeElements(codeArray, codeIndexArg) {
   const bigCodeLength = 20
 
-  if (codeIndexArg === null) return null
+  if (codeIndexArg === "none") return null
 
   if (codeIndexArg && codeIndexArg !== "auto") {
     return codeArray[codeIndexArg];
