@@ -115,7 +115,7 @@ const session = "123...";
 export { session };
 ```
 
-## Usage Instructions
+## Usage
 
 `main.js` takes up to 3 arguments to run:
 
