@@ -79,16 +79,15 @@ Example of `answer.js`:
 
 ```js
 // answer.js
-// https://www.adventofcode.com/2021/day/3
-import { exampleData } from "./puzzleData.js";
+// https://www.adventofcode.com/2023/day/2
 import { puzzleData } from "./puzzleData.js";
+import { exampleDataPart1, exampleDataPart2 } from "./puzzleData.js";
 
-let useExampleData;
-useExampleData = true;
+const allData = [puzzleData, exampleDataPart1, exampleDataPart2];
 
-const inputData = useExampleData && exampleData ? exampleData : puzzleData;
+const input = allData[0].split("\n").slice(0, -1);
 
-console.log(inputData);
+console.log('input', input);
 ```
 
 Example of `puzzle.md`

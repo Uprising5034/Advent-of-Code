@@ -71,7 +71,7 @@ function writeAnswerFile(dir) {
   fs.open(filePath, (err) => {
     if (err) {
       if (err.errno === -2) {
-        const jsData = `// ${url}\nimport { puzzleData } from "./puzzleData.js";\nimport { exampleDataPart1, exampleDataPart2 } from "./puzzleData.js";\n\nconst allData = [puzzleData, exampleDataPart1, exampleDataPart2];\n\nconst inputData = allData[0];\n\nconsole.log(inputData);\n`;
+        const jsData = `// ${url}\nimport { puzzleData } from "./puzzleData.js";\nimport { exampleDataPart1, exampleDataPart2 } from "./puzzleData.js";\n\nconst allData = [puzzleData, exampleDataPart1, exampleDataPart2];\n\nconst input = allData[0].split("\\n").slice(0, -1);\n\nconsole.log('input', input);\n`;
         fs.writeFile(filePath, jsData, (err) => {});
       } else {
         console.error(err);
