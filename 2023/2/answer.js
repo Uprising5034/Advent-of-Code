@@ -52,6 +52,7 @@ function filterGameData(gameData) {
       let valid = true;
       for (const color in round) {
         const cubeNum = round[color];
+        console.log(typeof cubeNum) // somehow I got away with this being a string...
 
         if (BAG[color] < cubeNum) {
           valid = false;
