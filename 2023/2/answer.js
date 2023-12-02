@@ -63,12 +63,37 @@ function filterGameData(gameData) {
   });
 }
 
+function calcCubePower(gameData) {
+  return gameData.map((game, gameIndex) => {
+    for (const color in BAG) {
+      game[color] = 0;
+    }
+
+    game.rounds.forEach((round, roundIndex) => {
+      for (const color in round) {
+        const cubeNum = Number(round[color]);
+
+        if (game[color] < cubeNum) {
+          game[color] = cubeNum;
+        }
+      }
+    });
+
+    game.power = game.red * game.green * game.blue;
+
+    return game.power;
+  });
+}
+
 function init() {
   const gameData = parseText(dataArray);
 
   const filterData = filterGameData(gameData);
+  const part1Answer = filterData.reduce((a, b) => a + b.game, 0);
 
-  return filterData.reduce((a, b) => a + b.game, 0);
+  const cubePower = calcCubePower(gameData);
+
+  const part2Answer = cubePower.reduce((a, b) => a + b, 0);
 }
 
-console.log("init()", init());
+init();
