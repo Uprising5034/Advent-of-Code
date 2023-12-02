@@ -140,7 +140,7 @@ function selectCodeElements(article, articleIndex) {
     codeElements.push(codeContent);
 
     const infoArray = codeContent.split("\n");
-    console.info(`<code>[${index}] -`, infoArray[0]);
+    console.info(`<code>[${index}]\t|`, infoArray[0]);
     if (infoArray.length > 1) {
       console.groupCollapsed();
       console.info(`+ ${infoArray.length - 1} lines`);
