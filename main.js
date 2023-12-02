@@ -33,7 +33,7 @@ function writePuzzleData(year, day, puzzleData, exampleData) {
   const filePath = dir + "/puzzleData.js";
 
   if (!exampleData.part2) {
-    exampleData.part2 = ""
+    exampleData.part2 = "";
   }
 
   const jsData =
@@ -99,12 +99,15 @@ async function fetchPuzzlePage(year, day, codeIndexArg1, codeIndexArg2) {
     articles.push($(element).html());
   });
 
-  const codeIndexArgs = [codeIndexArg1, codeIndexArg2]
+  const codeIndexArgs = [codeIndexArg1, codeIndexArg2];
   let articleStr = "";
-  const exampleData = {}
+  const exampleData = {};
   articles.forEach((article, index) => {
-    const codeElements = selectCodeElements(article)
-    exampleData[`part${index + 1}`] = filterCodeElements(codeElements, codeIndexArgs[index])
+    const codeElements = selectCodeElements(article);
+    exampleData[`part${index + 1}`] = filterCodeElements(
+      codeElements,
+      codeIndexArgs[index]
+    );
 
     articleStr += article;
   });
@@ -140,14 +143,16 @@ function selectCodeElements(article) {
 }
 
 function filterCodeElements(codeArray, codeIndexArg) {
-  const bigCodeLength = 20
+  const bigCodeLength = 20;
 
-  if (codeIndexArg === "none") return null
+  if (codeIndexArg === "none") return null;
 
   if (codeIndexArg && codeIndexArg !== "auto") {
     return codeArray[codeIndexArg];
   } else {
-    const firstBigCode = codeArray.find((element) => element.length > bigCodeLength);
+    const firstBigCode = codeArray.find(
+      (element) => element.length > bigCodeLength
+    );
     return (
       firstBigCode || codeArray.reduce((a, b) => (a.length > b.length ? a : b))
     );
@@ -159,7 +164,7 @@ async function init() {
     year,
     day,
     codeIndexArg1,
-    codeIndexArg2,
+    codeIndexArg2
   );
   const puzzleData = await fetchPuzzleData(year, day);
 
