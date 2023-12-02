@@ -143,7 +143,7 @@ function selectCodeElements(article, articleIndex) {
     console.info(`<code>[${index}] -`, infoArray[0]);
     if (infoArray.length > 1) {
       console.groupCollapsed();
-      console.info(`+ ${infoArray.length - 1} lines...`);
+      console.info(`+ ${infoArray.length - 1} lines`);
       console.groupEnd();
     }
   });
