@@ -103,7 +103,7 @@ async function fetchPuzzlePage(year, day, codeIndexArg1, codeIndexArg2) {
   let articleStr = "";
   const exampleData = {};
   articles.forEach((article, index) => {
-    const codeElements = selectCodeElements(article);
+    const codeElements = selectCodeElements(article, index);
     exampleData[`part${index + 1}`] = filterCodeElements(
       codeElements,
       codeIndexArgs[index]
@@ -130,15 +130,25 @@ function writePuzzleArticle(dir, articleMarkdown) {
   });
 }
 
-function selectCodeElements(article) {
-  // TODO: add console logs with part, codeElement, && codeElementIndex
+function selectCodeElements(article, articleIndex) {
+  console.groupCollapsed(`\nPart ${articleIndex + 1}:`);
   const $article = cheerio.load(article);
 
   const codeElements = [];
   $article("code").each((index, element) => {
     const codeContent = $article(element).text();
     codeElements.push(codeContent);
+
+    const infoArray = codeContent.split("\n");
+    console.info(`<code>[${index}] -`, infoArray[0]);
+    if (infoArray.length > 1) {
+      console.groupCollapsed();
+      console.info(`+ ${infoArray.length - 1} lines...`);
+      console.groupEnd();
+    }
   });
+  console.groupEnd();
+  console.log("\n======================");
   return codeElements;
 }
 
