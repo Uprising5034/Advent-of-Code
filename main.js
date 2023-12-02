@@ -128,6 +128,7 @@ function writePuzzleArticle(dir, articleMarkdown) {
 }
 
 function selectCodeElements(article) {
+  // TODO: add console logs with part, codeElement, && codeElementIndex
   const $article = cheerio.load(article);
 
   const codeElements = [];
