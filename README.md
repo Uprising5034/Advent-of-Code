@@ -142,6 +142,20 @@ Each `exampleData` is populated with `<code>` blocks on each part of the puzzle 
 
 The script mostly picks the correct example code however there are some times you will need to manually pick a `codeIndex` in order to correctly populate each `exampleData`.
 
+To help with this, a summary of the `<code>` blocks are printed in stdout. [Year 2016, Day 6](https://adventofcode.com/2016/day/6) outputs:
+
+```zsh
+Part 1:
+  <code>[0]     | eedadn
+    + 16 lines
+  <code>[1]     | e
+  <code>[2]     | a
+  <code>[3]     | s
+  <code>[4]     | easter
+
+======================
+```
+
 ## Examples
 
 ### Example 1
@@ -166,7 +180,43 @@ node main.js 2022 auto none
 
 ### Example 2
 
-[Year 2022, Day 9](https://adventofcode.com/2022/day/9) grabs the wrong `<code>` block by default because the first code block that is greater than 20 characters long isn't the one we're after! Part 2 also has example data after a very long `<code>` block. Therefore, you would need to run:
+[Year 2022, Day 9](https://adventofcode.com/2022/day/9) grabs the wrong `<code>` block by default because the first code block that is >20 characters long isn't the one we're after! Part 2 also has example data after a very long `<code>` block.
+
+With the stdout, we can find the matching first line being `"R 4"` for part 1 and `"R 5"` for part 2:
+
+```zsh
+Part 1:
+  <code>[0]     | H
+  <code>[1]     | T
+  <code>[2]     | ....
+    + 12 lines
+  <code>[3]     | .....    .....    .....
+    + 9 lines
+  <code>[4]     | .....    .....    .....
+    + 11 lines
+  <code>[5]     | R 4
+    + 8 lines
+  ...
+  <code>[11]    | 13
+
+======================
+
+Part 2:
+  <code>[0]     | H
+  ...
+  <code>[4]     | == Initial State ==
+  + 167 lines
+  ...
+  <code>[7]     | R 5
+    + 8 lines
+  ...
+  <code>[12]    | ..........................
+    + 21 lines
+
+======================
+```
+
+Therefore, you would need to run:
 
 ```zsh
 node main.js 2022 9 5 7
