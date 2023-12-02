@@ -33,7 +33,7 @@ function writePuzzleData(year, day, puzzleData, exampleData) {
   const filePath = dir + "/puzzleData.js";
 
   if (!exampleData.part2) {
-    exampleData.part2 = ""
+    exampleData.part2 = "";
   }
 
   const jsData =
@@ -71,7 +71,7 @@ function writeAnswerFile(dir) {
   fs.open(filePath, (err) => {
     if (err) {
       if (err.errno === -2) {
-        const jsData = `// ${url}\nimport { puzzleData } from "./puzzleData.js";\nimport { exampleDataPart1, exampleDataPart2 } from "./puzzleData.js";\n\nconst allData = [puzzleData, exampleDataPart1, exampleDataPart2];\n\nconst inputData = allData[0];\n\nconsole.log(inputData);\n`;
+        const jsData = `// ${url}\nimport { puzzleData } from "./puzzleData.js";\nimport { exampleDataPart1, exampleDataPart2 } from "./puzzleData.js";\n\nconst allData = [puzzleData, exampleDataPart1, exampleDataPart2];\n\nconst input = allData[0].split("\\n").slice(0, -1);\n\nconsole.log('input', input);\n`;
         fs.writeFile(filePath, jsData, (err) => {});
       } else {
         console.error(err);
@@ -99,12 +99,15 @@ async function fetchPuzzlePage(year, day, codeIndexArg1, codeIndexArg2) {
     articles.push($(element).html());
   });
 
-  const codeIndexArgs = [codeIndexArg1, codeIndexArg2]
+  const codeIndexArgs = [codeIndexArg1, codeIndexArg2];
   let articleStr = "";
-  const exampleData = {}
+  const exampleData = {};
   articles.forEach((article, index) => {
-    const codeElements = selectCodeElements(article)
-    exampleData[`part${index + 1}`] = filterCodeElements(codeElements, codeIndexArgs[index])
+    const codeElements = selectCodeElements(article, index);
+    exampleData[`part${index + 1}`] = filterCodeElements(
+      codeElements,
+      codeIndexArgs[index]
+    );
 
     articleStr += article;
   });
@@ -127,26 +130,39 @@ function writePuzzleArticle(dir, articleMarkdown) {
   });
 }
 
-function selectCodeElements(article) {
+function selectCodeElements(article, articleIndex) {
+  console.groupCollapsed(`\nPart ${articleIndex + 1}:`);
   const $article = cheerio.load(article);
 
   const codeElements = [];
   $article("code").each((index, element) => {
     const codeContent = $article(element).text();
     codeElements.push(codeContent);
+
+    const infoArray = codeContent.split("\n");
+    console.info(`<code>[${index}]\t|`, infoArray[0]);
+    if (infoArray.length > 1) {
+      console.groupCollapsed();
+      console.info(`+ ${infoArray.length - 1} lines`);
+      console.groupEnd();
+    }
   });
+  console.groupEnd();
+  console.log("\n======================");
   return codeElements;
 }
 
 function filterCodeElements(codeArray, codeIndexArg) {
-  const bigCodeLength = 20
+  const bigCodeLength = 20;
 
-  if (codeIndexArg === "none") return null
+  if (codeIndexArg === "none") return null;
 
   if (codeIndexArg && codeIndexArg !== "auto") {
     return codeArray[codeIndexArg];
   } else {
-    const firstBigCode = codeArray.find((element) => element.length > bigCodeLength);
+    const firstBigCode = codeArray.find(
+      (element) => element.length > bigCodeLength
+    );
     return (
       firstBigCode || codeArray.reduce((a, b) => (a.length > b.length ? a : b))
     );
@@ -158,7 +174,7 @@ async function init() {
     year,
     day,
     codeIndexArg1,
-    codeIndexArg2,
+    codeIndexArg2
   );
   const puzzleData = await fetchPuzzleData(year, day);
 
