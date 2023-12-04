@@ -17,11 +17,12 @@ function parseInput(input) {
       id: cardId.split(" ")[1],
       winNums: winNums.split(" "),
       ownNums: ownNums.split(" "),
+      quantity: 1,
     };
   });
 }
 
-function matchNums(scratchCards) {
+function part1(scratchCards) {
   scratchCards.forEach((card) => {
     card.matchNums = [];
     card.winNums.forEach((num) => {
@@ -34,22 +35,32 @@ function matchNums(scratchCards) {
     });
 
     const tally = card.matchNums.length;
-    card.tally = tally
+    card.tally = tally;
     if (tally) {
       card.score = 2 ** (tally - 1);
     } else {
       card.score = 0;
     }
   });
+
+  return scratchCards.reduce((a, b) => a + b.score, 0);
+}
+
+function part2(scratchCards) {
+  scratchCards.forEach((card, cardIdx) => {
+    for (let i = 1; i <= card.tally; i++) {
+      scratchCards[cardIdx + i].quantity += 1 * card.quantity
+    }
+  });
+
+  return scratchCards.reduce((a, b) => a + b.quantity, 0)
 }
 
 function solve(input) {
   const scratchCards = parseInput(input);
 
-  matchNums(scratchCards);
-
-  const part1 = scratchCards.reduce((a, b) => a + b.score, 0)
-  console.log(part1)
+  console.log(part1(scratchCards));
+  console.log(part2(scratchCards));
 }
 
 solve(input);
