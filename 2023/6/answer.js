@@ -7,7 +7,7 @@ const dataArg = process.argv[2];
 const allData = [puzzleData, exampleDataPart1, exampleDataPart2];
 const input = allData[dataArg || 0].split("\n").slice(0, -1);
 
-function parseText(input) {
+function parseText1(input) {
   return input.map((line) => {
     return line
       .split(" ")
@@ -17,7 +17,16 @@ function parseText(input) {
   });
 }
 
-function part1(records) {
+function parseText2(input) {
+  return input.map((line) => {
+    return line
+      .split(":")
+      .slice(1).map(seg => seg.replaceAll(" ", ""))
+      .map((char) => Number(char));
+  });
+}
+
+function calc(records) {
   const [times, distances] = records;
 
   const rounds = [];
@@ -39,11 +48,14 @@ function part1(records) {
 }
 
 function solve(input) {
-  const records = parseText(input);
+  const records1 = parseText1(input);
+  const records2 = parseText2(input);
 
-  const answer1 = part1(records);
+  const answer1 = calc(records1);
+  const answer2 = calc(records2);
 
   console.log("answer1", answer1);
+  console.log('answer2', answer2)
 }
 
 solve(input);
