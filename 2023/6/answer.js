@@ -21,7 +21,8 @@ function parseText2(input) {
   return input.map((line) => {
     return line
       .split(":")
-      .slice(1).map(seg => seg.replaceAll(" ", ""))
+      .slice(1)
+      .map((seg) => seg.replaceAll(" ", ""))
       .map((char) => Number(char));
   });
 }
@@ -55,7 +56,7 @@ function solve(input) {
   const answer2 = calc(records2);
 
   console.log("answer1", answer1);
-  console.log('answer2', answer2)
+  console.log("answer2", answer2);
 }
 
 solve(input);
