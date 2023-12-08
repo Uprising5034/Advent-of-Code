@@ -29,71 +29,63 @@ function parse(input) {
 }
 
 function calc1(directions) {
-  const {steps, nodes} = directions
+  const { steps, nodes } = directions;
   let stepsTaken = 0;
   let nextStepIdx = 0;
 
   let curNode = "AAA";
 
   while (curNode !== "ZZZ") {
-    curNode = nodes[curNode][steps[nextStepIdx]]
-    stepsTaken++
-    nextStepIdx = (nextStepIdx + 1) % steps.length
+    curNode = nodes[curNode][steps[nextStepIdx]];
+    stepsTaken++;
+    nextStepIdx = (nextStepIdx + 1) % steps.length;
   }
 
-  return stepsTaken
+  return stepsTaken;
 }
 
 function calc2(directions) {
-  const {steps, nodes} = directions
+  const { steps, nodes } = directions;
 
-  const initialNodes = Object.keys(nodes).filter(node => node[2] === "A")
+  const initialNodes = Object.keys(nodes).filter((node) => node[2] === "A");
 
-  const loops = []
-  initialNodes.forEach(iNode => {
+  const loops = [];
+  initialNodes.forEach((iNode) => {
     let nextStepIdx = 0;
-    let stepsTaken = 0
-  
+    let stepsTaken = 0;
+
     let curNode = iNode;
+    let endIdx;
 
-    const visitedNodes = []
-    const endNodes = []
-    let endIdx
-  
-    while (!visitedNodes.includes(curNode) || !endIdx) {
-      visitedNodes.push(curNode)
-
+    while (true) {
       if (curNode[2] === "Z") {
-        endNodes.push(curNode)
-        endIdx = stepsTaken
+        endIdx = stepsTaken;
+        break
       }
-      
-      curNode = nodes[curNode][steps[nextStepIdx]]
-      nextStepIdx = (nextStepIdx + 1) % steps.length
-      stepsTaken++
+
+      curNode = nodes[curNode][steps[nextStepIdx]];
+      nextStepIdx = (nextStepIdx + 1) % steps.length;
+      stepsTaken++;
     }
 
-    const stepStart = visitedNodes.indexOf(curNode)
-    const loop = visitedNodes.slice(stepStart)
+    const primeFactor = endIdx / steps.length;
 
     loops.push({
-      loop,
-      stepStart,
-      endNodes,
       endIdx,
-      curNode,
-    })
-  })
-
-  console.log('loops', loops)
+      primeFactor,
+    });
+  });
+  return loops.reduce((a, b) => a * b.primeFactor, 1) * steps.length;
 }
 
 function solve(input) {
   const directions = parse(input);
 
-  // const answer1 = calc1(directions);
+  const answer1 = calc1(directions);
+  const answer2 = calc2(directions);
 
-  const answer2 = calc2(directions)
+  console.log("answer1", answer1);
+  console.log("answer2", answer2);
 }
 
 solve(input);
