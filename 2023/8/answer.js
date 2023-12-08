@@ -28,7 +28,7 @@ function parse(input) {
   };
 }
 
-function calc(directions) {
+function calc1(directions) {
   const {steps, nodes} = directions
   let stepsTaken = 0;
   let nextStepIdx = 0;
@@ -44,11 +44,56 @@ function calc(directions) {
   return stepsTaken
 }
 
+function calc2(directions) {
+  const {steps, nodes} = directions
+
+  const initialNodes = Object.keys(nodes).filter(node => node[2] === "A")
+
+  const loops = []
+  initialNodes.forEach(iNode => {
+    let nextStepIdx = 0;
+    let stepsTaken = 0
+  
+    let curNode = iNode;
+
+    const visitedNodes = []
+    const endNodes = []
+    let endIdx
+  
+    while (!visitedNodes.includes(curNode) || !endIdx) {
+      visitedNodes.push(curNode)
+
+      if (curNode[2] === "Z") {
+        endNodes.push(curNode)
+        endIdx = stepsTaken
+      }
+      
+      curNode = nodes[curNode][steps[nextStepIdx]]
+      nextStepIdx = (nextStepIdx + 1) % steps.length
+      stepsTaken++
+    }
+
+    const stepStart = visitedNodes.indexOf(curNode)
+    const loop = visitedNodes.slice(stepStart)
+
+    loops.push({
+      loop,
+      stepStart,
+      endNodes,
+      endIdx,
+      curNode,
+    })
+  })
+
+  console.log('loops', loops)
+}
+
 function solve(input) {
   const directions = parse(input);
 
-  const answer1 = calc(directions);
-  console.log('answer1', answer1)
+  // const answer1 = calc1(directions);
+
+  const answer2 = calc2(directions)
 }
 
 solve(input);
