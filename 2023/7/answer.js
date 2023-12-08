@@ -115,7 +115,7 @@ function solve(input) {
 
   const answer2 = calc(handsPart2, cardValuesPart2);
 
-  console.log('answer1', answer1)
+  console.log("answer1", answer1);
   console.log("answer2", answer2);
 }
 
