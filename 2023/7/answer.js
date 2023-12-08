@@ -15,7 +15,15 @@ const cardValuesPart1 = {
   A: 14,
 };
 
-function parse(input) {
+const cardValuesPart2 = {
+  T: 10,
+  J: 1,
+  Q: 12,
+  K: 13,
+  A: 14,
+};
+
+function parse(input, part2) {
   return input.map((line) => {
     const [hand, bid] = line.split(" ");
 
@@ -29,7 +37,7 @@ function parse(input) {
       }
     }
 
-    const strength = handStrength(count);
+    const strength = handStrength(count, part2);
 
     return {
       hand: hand,
@@ -40,33 +48,45 @@ function parse(input) {
   });
 }
 
-function handStrength(count) {
-  const cards = Object.keys(count).sort((a, b) => {
-    return count[b] - count[a];
-  });
+function handStrength(count, part2) {
+  const cards = Object.keys(count)
+    .sort((a, b) => {
+      return count[b] - count[a];
+    })
+    .filter((card) => {
+      if (part2) {
+        return card !== "J";
+      }
+      return true;
+    });
+
+  let jokerCount = 0;
+  if (part2) {
+    jokerCount = count.J || 0;
+  }
 
   const set1 = count[cards[0]];
   const set2 = count[cards[1]];
 
-  if (set1 === 5) return 6; // 5 of a kind
-  if (set1 === 4) return 5; // 4 of a kind
-  if (set1 === 3) {
+  if (set1 + jokerCount === 5 || jokerCount === 5) return 6; // 5 of a kind
+  if (set1 + jokerCount === 4) return 5; // 4 of a kind
+  if (set1 + jokerCount === 3) {
     if (set2 === 2) return 4; // full house
     return 3; // 3 of a kind
   }
-  if (set1 === 2) {
+  if (set1 + jokerCount === 2) {
     if (set2 === 2) return 2; // 2 pair
     return 1; // 1 pair
   }
   return 0; // high card
 }
 
-function part1(hands) {
+function calc(hands, cardValues) {
   const sorted = hands.sort((a, b) => {
     if (a.strength === b.strength) {
       for (let i = 0; i < a.hand.length; i++) {
-        const cardA = cardValuesPart1[a.hand[i]] || Number(a.hand[i]);
-        const cardB = cardValuesPart1[b.hand[i]] || Number(b.hand[i]);
+        const cardA = cardValues[a.hand[i]] || Number(a.hand[i]);
+        const cardB = cardValues[b.hand[i]] || Number(b.hand[i]);
 
         if (cardA === cardB) {
           continue;
@@ -75,24 +95,28 @@ function part1(hands) {
         return cardA - cardB;
       }
     }
-
     return a.strength - b.strength;
   });
 
   sorted.forEach((hand, idx) => {
     hand.rank = idx + 1;
-    hand.winnings = hand.rank * hand.bid
+    hand.winnings = hand.rank * hand.bid;
   });
 
-  return sorted.reduce((a, b) => a + b.winnings, 0)
+  return sorted.reduce((a, b) => a + b.winnings, 0);
 }
 
 function solve(input) {
-  const hands = parse(input);
+  const handsPart1 = parse(input);
 
-  const answer1 = part1(hands);
+  const answer1 = calc(handsPart1, cardValuesPart1);
 
-  console.log("answer1", answer1);
+  const handsPart2 = parse(input, true);
+
+  const answer2 = calc(handsPart2, cardValuesPart2);
+
+  console.log('answer1', answer1)
+  console.log("answer2", answer2);
 }
 
 solve(input);
