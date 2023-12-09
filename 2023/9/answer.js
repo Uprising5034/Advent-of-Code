@@ -57,7 +57,6 @@ function calc(oasis, part2) {
 }
 
 function solve(input) {
-  // const oasis = parse([input[198]]);
   const oasis = parse(input);
 
   const answer1 = calc(oasis);
