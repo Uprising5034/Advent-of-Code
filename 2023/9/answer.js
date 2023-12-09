@@ -13,7 +13,7 @@ function parse(input) {
 
 function calc(oasis, part2) {
   const history = oasis.map((sequence) => {
-    const layers = [sequence];
+    const layers = !part2 ? [sequence] : [sequence.toReversed()];
 
     let lastLayer = layers[layers.length - 1];
     while (lastLayer.some((value) => value !== 0)) {
@@ -23,8 +23,8 @@ function calc(oasis, part2) {
 
         if (!isNaN(nextNum)) {
           nextLayer.push(nextNum - num);
-        } else if(nextLayer.length === 0) {
-          nextLayer.push(0)
+        } else if (nextLayer.length === 0) {
+          nextLayer.push(0);
         }
       });
       layers.push(nextLayer);
@@ -38,21 +38,17 @@ function calc(oasis, part2) {
       const sequence = report[i];
       const calcSequence = report[i + 1];
 
-      const value = part2 ? sequence[0] : sequence[sequence.length - 1];
-      const calcValue = part2 ? calcSequence[0] : calcSequence[calcSequence.length - 1];
+      const value = sequence[sequence.length - 1];
+      const calcValue = calcSequence[calcSequence.length - 1];
 
-      const nextValue = part2 ? value - calcValue : value + calcValue;
+      const nextValue = value + calcValue;
 
-      if (part2) {
-        sequence.unshift(nextValue)
-      } else {
-        sequence.push(nextValue)
-      }
+      sequence.push(nextValue);
     }
   });
 
   return history.reduce((a, b) => {
-    return part2 ? a + b[0][0] : a + b[0][b[0].length - 1];
+    return a + b[0][b[0].length - 1];
   }, 0);
 }
 
@@ -60,10 +56,10 @@ function solve(input) {
   const oasis = parse(input);
 
   const answer1 = calc(oasis);
-  const answer2 = calc(oasis, true)
+  const answer2 = calc(oasis, true);
 
   console.log("answer1", answer1);
-  console.log('answer2', answer2)
+  console.log("answer2", answer2);
 }
 
 solve(input);
